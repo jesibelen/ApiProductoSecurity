@@ -11,12 +11,42 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-
+/*
+ # @Configuration
+ Con la anotacion @Configaration estamos diciendo a Spring  que toodo lo que pasa aca adentro en esta clase sea lo primero
+  en leer y analizar antes de iniciar a correr la aplicacion, para que configure.
+ ---------------------------------------------------------------
+ # @EnableWebSecurity
+  Tenemos que activar la SEGURIDAD WEB
+  Es una anotacion que establece ciertas pautas de configuracion
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    /*
+    Generate -> Override Methods -> configure(http:HttpSecurity):void
+     */
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        /* # ESTAMOS ROMPIENDO LA REGLA DE LA LEY DE DEMETER?
+
+        NO un rotundamente no, porque la ley de demeter dice que no podemos hablar con extranios, en nuestro caso
+        el metodo disable() me devuelve un objeto que es un HttpSecurity y ese objeto es mi http que me enviaron
+        como parametro en el metodo configue, luego los metodos authorizeRequests(), antMatchers(), etc...
+        me retornan ese mismisimo objeto http ya configurado, por lo cual me permite hacer una sola linea de codigo
+        o sea concatenar los metodos pero los escribimos uno bajo del otro para que se vea bonito
+        y no se vea un choclo XD.
+        ----------------------------------------------------------------------------------------------------
+        # MUY IMPORTANTE : cumplir con el orden de la configuracion especifica, porque al cambiar el orden de configuracion
+        de algunas cosas puede provocar distintos resultados en mi configuracion.
+        ----------------------------------------------------------------------------------------------------
+        # QUE ES CSRF (Cross Site Request  Forgery)?
+        Es una subplantancion de un request, pero el metodo csrf() es para asegurar cuando tenemos un front en nuestro
+        como hicimos una API deshabilitaremos el metodo csrf().
+        ----------------------------------------------------------------------------------------------------
+         */
         http
                 .csrf().disable()
                 .authorizeRequests()
